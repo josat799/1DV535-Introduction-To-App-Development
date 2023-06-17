@@ -1,4 +1,7 @@
+import 'package:flutter/gestures.dart';
 import 'package:flutter/material.dart';
+import 'package:google_fonts/google_fonts.dart';
+import 'package:url_launcher/url_launcher.dart';
 
 void main() {
   runApp(const MyApp());
@@ -7,119 +10,122 @@ void main() {
 class MyApp extends StatelessWidget {
   const MyApp({super.key});
 
-  // This widget is the root of your application.
   @override
   Widget build(BuildContext context) {
     return MaterialApp(
       title: 'Flutter Demo',
       theme: ThemeData(
-        // This is the theme of your application.
-        //
-        // TRY THIS: Try running your application with "flutter run". You'll see
-        // the application has a blue toolbar. Then, without quitting the app,
-        // try changing the seedColor in the colorScheme below to Colors.green
-        // and then invoke "hot reload" (save your changes or press the "hot
-        // reload" button in a Flutter-supported IDE, or press "r" if you used
-        // the command line to start the app).
-        //
-        // Notice that the counter didn't reset back to zero; the application
-        // state is not lost during the reload. To reset the state, use hot
-        // restart instead.
-        //
-        // This works for code too, not just values: Most code changes can be
-        // tested with just a hot reload.
         colorScheme: ColorScheme.fromSeed(seedColor: Colors.deepPurple),
         useMaterial3: true,
       ),
-      home: const MyHomePage(title: 'Flutter Demo Home Page'),
+      home: const TheMeCard(),
     );
   }
 }
 
-class MyHomePage extends StatefulWidget {
-  const MyHomePage({super.key, required this.title});
-
-  // This widget is the home page of your application. It is stateful, meaning
-  // that it has a State object (defined below) that contains fields that affect
-  // how it looks.
-
-  // This class is the configuration for the state. It holds the values (in this
-  // case the title) provided by the parent (in this case the App widget) and
-  // used by the build method of the State. Fields in a Widget subclass are
-  // always marked "final".
-
-  final String title;
-
-  @override
-  State<MyHomePage> createState() => _MyHomePageState();
+enum InformationTileOption {
+  phone,
+  email,
+  website,
 }
 
-class _MyHomePageState extends State<MyHomePage> {
-  int _counter = 0;
+class TheMeCard extends StatelessWidget {
+  const TheMeCard({super.key});
 
-  void _incrementCounter() {
-    setState(() {
-      // This call to setState tells the Flutter framework that something has
-      // changed in this State, which causes it to rerun the build method below
-      // so that the display can reflect the updated values. If we changed
-      // _counter without calling setState(), then the build method would not be
-      // called again, and so nothing would appear to happen.
-      _counter++;
-    });
-  }
+  final Map<InformationTileOption, String> userInformation = const {
+    InformationTileOption.email: "josef.atoui@live.se",
+    InformationTileOption.phone: "0707 769116",
+    InformationTileOption.website: "https://github.com/josat799"
+  };
 
   @override
   Widget build(BuildContext context) {
-    // This method is rerun every time setState is called, for instance as done
-    // by the _incrementCounter method above.
-    //
-    // The Flutter framework has been optimized to make rerunning build methods
-    // fast, so that you can just rebuild anything that needs updating rather
-    // than having to individually change instances of widgets.
     return Scaffold(
       appBar: AppBar(
-        // TRY THIS: Try changing the color here to a specific color (to
-        // Colors.amber, perhaps?) and trigger a hot reload to see the AppBar
-        // change color while the other colors stay the same.
-        backgroundColor: Theme.of(context).colorScheme.inversePrimary,
-        // Here we take the value from the MyHomePage object that was created by
-        // the App.build method, and use it to set our appbar title.
-        title: Text(widget.title),
-      ),
-      body: Center(
-        // Center is a layout widget. It takes a single child and positions it
-        // in the middle of the parent.
-        child: Column(
-          // Column is also a layout widget. It takes a list of children and
-          // arranges them vertically. By default, it sizes itself to fit its
-          // children horizontally, and tries to be as tall as its parent.
-          //
-          // Column has various properties to control how it sizes itself and
-          // how it positions its children. Here we use mainAxisAlignment to
-          // center the children vertically; the main axis here is the vertical
-          // axis because Columns are vertical (the cross axis would be
-          // horizontal).
-          //
-          // TRY THIS: Invoke "debug painting" (choose the "Toggle Debug Paint"
-          // action in the IDE, or press "p" in the console), to see the
-          // wireframe for each widget.
-          mainAxisAlignment: MainAxisAlignment.center,
-          children: <Widget>[
-            const Text(
-              'You have pushed the button this many times:',
-            ),
-            Text(
-              '$_counter',
-              style: Theme.of(context).textTheme.headlineMedium,
-            ),
-          ],
+        centerTitle: true,
+        title: Text(
+          "Josef Atoui",
+          style: GoogleFonts.pacifico(fontSize: 48),
         ),
       ),
-      floatingActionButton: FloatingActionButton(
-        onPressed: _incrementCounter,
-        tooltip: 'Increment',
-        child: const Icon(Icons.add),
-      ), // This trailing comma makes auto-formatting nicer for build methods.
+      body: Center(
+        child: Padding(
+          padding: const EdgeInsets.symmetric(horizontal: 50, vertical: 200),
+          child: Card(
+            child: SizedBox(
+              child: Column(
+                mainAxisAlignment: MainAxisAlignment.spaceAround,
+                children: [
+                  addCardHeder(),
+                  addUserInformation(),
+                ],
+              ),
+            ),
+          ),
+        ),
+      ),
+    );
+  }
+
+  Column addUserInformation() {
+    return Column(
+        children: InformationTileOption.values
+            .map((e) => addInformationTile(e, userInformation[e]!))
+            .toList());
+  }
+
+  ListTile addInformationTile(
+      InformationTileOption option, String information) {
+    return switch (option) {
+      InformationTileOption.phone => ListTile(
+          leading: const Icon(Icons.phone_android_outlined),
+          title: Text.rich(
+            TextSpan(
+              style: const TextStyle(color: Colors.blue),
+              text: information,
+              recognizer: TapGestureRecognizer()
+                ..onTap =
+                    () async => await launchUrl(Uri.parse('tel:$information')),
+            ),
+          ),
+        ),
+      InformationTileOption.email => ListTile(
+          leading: const Icon(Icons.email_outlined),
+          title: Text.rich(
+            TextSpan(
+              style: const TextStyle(color: Colors.blue),
+              text: information,
+              recognizer: TapGestureRecognizer()
+                ..onTap = () async =>
+                    await launchUrl(Uri.parse('mailto:$information')),
+            ),
+          ),
+        ),
+      InformationTileOption.website => ListTile(
+          leading: const Icon(Icons.web_outlined),
+          title: Text.rich(
+            TextSpan(
+              style: const TextStyle(color: Colors.blue),
+              text: information,
+              recognizer: TapGestureRecognizer()
+                ..onTap = () async => launchUrl(Uri.parse(information)),
+            ),
+          ),
+        ),
+    };
+  }
+
+  Row addCardHeder() {
+    return const Row(
+      mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+      children: [
+        CircleAvatar(
+          radius: 50,
+          backgroundImage: NetworkImage(
+              "https://scontent.farn2-2.fna.fbcdn.net/v/t1.6435-9/73388489_2539406379431769_8614658395145764864_n.jpg?_nc_cat=107&ccb=1-7&_nc_sid=09cbfe&_nc_ohc=ITTbUuaoT0QAX8JBpkJ&_nc_ht=scontent.farn2-2.fna&oh=00_AfC2gkjzXWyhs4Xyl6bCHdXAW1gcPdpCmjeBt28rng_Bsw&oe=64B50CA1"),
+        ),
+        Text("MSc Computer Science")
+      ],
     );
   }
 }
