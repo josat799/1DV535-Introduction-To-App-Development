@@ -13,7 +13,6 @@ class MyApp extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return MaterialApp(
-      title: 'Flutter Demo',
       theme: ThemeData(
         colorScheme: ColorScheme.fromSeed(seedColor: Colors.deepPurple),
         useMaterial3: true,
@@ -45,14 +44,15 @@ class TheMeCard extends StatelessWidget {
         centerTitle: true,
         title: Text(
           "Josef Atoui",
-          style: GoogleFonts.pacifico(fontSize: 48),
+          style: GoogleFonts.pacifico(fontSize: 32),
         ),
       ),
       body: Center(
-        child: Padding(
-          padding: const EdgeInsets.symmetric(horizontal: 50, vertical: 200),
+        child: Container(
+          margin: const EdgeInsets.symmetric(horizontal: 32.0),
           child: Card(
-            child: SizedBox(
+            child: SingleChildScrollView(
+              padding: const EdgeInsets.symmetric(vertical: 32),
               child: Column(
                 mainAxisAlignment: MainAxisAlignment.spaceAround,
                 children: [
@@ -122,9 +122,9 @@ class TheMeCard extends StatelessWidget {
         CircleAvatar(
           radius: 50,
           backgroundImage: NetworkImage(
-              "https://scontent.farn2-2.fna.fbcdn.net/v/t1.6435-9/73388489_2539406379431769_8614658395145764864_n.jpg?_nc_cat=107&ccb=1-7&_nc_sid=09cbfe&_nc_ohc=ITTbUuaoT0QAX8JBpkJ&_nc_ht=scontent.farn2-2.fna&oh=00_AfC2gkjzXWyhs4Xyl6bCHdXAW1gcPdpCmjeBt28rng_Bsw&oe=64B50CA1"),
+              "https://scontent-arn2-1.xx.fbcdn.net/v/t1.6435-1/73388489_2539406379431769_8614658395145764864_n.jpg?stp=dst-jpg_p160x160&_nc_cat=107&ccb=1-7&_nc_sid=dbb9e7&_nc_ohc=CRBXOEk_oV4AX_7JO_Y&_nc_ht=scontent-arn2-1.xx&oh=00_AfBUQL-pRPd-pb_4rRODxSUbDz84JF1R5tmzidkpdJaTjg&oe=64DF0D6B"),
         ),
-        Text("MSc Computer Science")
+        Flexible(fit: FlexFit.loose, child: Text("MSc Computer Science"))
       ],
     );
   }
