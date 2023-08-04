@@ -53,8 +53,11 @@ Future<void> main() async {
               pageBuilder = (_, __, ___) => const ForecastView();
               break;
             default:
-              pageBuilder =
-                  (_, __, ___) => LocatorError(previousPermission: permission);
+              pageBuilder = (_, __, ___) =>
+                  permission == LocationPermission.always ||
+                          permission == LocationPermission.whileInUse
+                      ? const HomeView(apiKey: weatherApiKey)
+                      : LocatorError(previousPermission: permission);
               break;
           }
           return PageRouteBuilder(
@@ -74,19 +77,6 @@ Future<void> main() async {
             },
           );
         },
-        // routes: {
-        //   HomeView.ROUTENAME: (context) => const HomeView(
-        //         apiKey: weatherApiKey,
-        //       ),
-        //   ForecastView.ROUTENAME: (context) => const ForecastView(),
-        //   AboutView.ROUTENAME: (context) => AboutView(),
-        //   LocatorError.ROUTENAME: (context) =>
-        //       LocatorError(previousPermission: permission),
-        // },
-        initialRoute: permission == LocationPermission.whileInUse ||
-                permission == LocationPermission.always
-            ? HomeView.ROUTENAME
-            : LocatorError.ROUTENAME,
         theme: ThemeData(
           colorScheme: ColorScheme.fromSeed(
               seedColor: Colors.blueGrey, brightness: Brightness.dark),

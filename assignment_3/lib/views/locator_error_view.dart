@@ -12,22 +12,14 @@ class LocatorError extends StatefulWidget {
   State<LocatorError> createState() => _LocatorErrorState();
 }
 
-class _LocatorErrorState extends State<LocatorError>
-    with WidgetsBindingObserver {
-  bool settingsHasBeenOpened = false;
+class _LocatorErrorState extends State<LocatorError> {
+  bool settingsHaveBeenOpened = false;
   late LocationPermission permission;
 
   @override
   void initState() {
     permission = widget.previousPermission;
     super.initState();
-  }
-
-  @override
-  void didChangeAppLifecycleState(AppLifecycleState state) {
-    if (state == AppLifecycleState.resumed) {
-      checkPermission();
-    }
   }
 
   void checkPermission() async {
@@ -54,21 +46,24 @@ class _LocatorErrorState extends State<LocatorError>
                       ? "Please open your settings to grant access for the app!"
                       : ""),
               WidgetSpan(
-                  child: ElevatedButton.icon(
-                      onPressed: () =>
-                          permission == LocationPermission.deniedForever
-                              ? Geolocator.openLocationSettings()
-                              : Geolocator.requestPermission().then((value) {
-                                  setState(() {
-                                    settingsHasBeenOpened = true;
-                                  });
-                                }),
-                      icon: Icon(permission == LocationPermission.deniedForever
-                          ? Icons.open_in_new_outlined
-                          : Icons.perm_device_information_outlined),
-                      label: Text(permission == LocationPermission.deniedForever
-                          ? "Open Settings"
-                          : "Request again!")))
+                child: ElevatedButton.icon(
+                  onPressed: () => Geolocator.openAppSettings(),
+                  icon: const Icon(Icons.open_in_new_outlined),
+                  label: const Text("Open Settings"),
+                ),
+              ),
+              WidgetSpan(
+                child: ElevatedButton.icon(
+                  onPressed: () => Geolocator.requestPermission().then((value) {
+                    setState(() {
+                      permission = value;
+                    });
+                    checkPermission();
+                  }),
+                  icon: const Icon(Icons.perm_device_information_outlined),
+                  label: const Text("Request again!"),
+                ),
+              ),
             ],
           ),
         ),
