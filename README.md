@@ -1,16 +1,16 @@
 # 1DV535-Introduction-To-App-Development
 
-## Assignment 1 - 🕗
+## Assignment 1 - ✅
 
-Status: Waiting for next opportunity to hand-in.
+Status: Done
 
-## Assignment 2 - 🕗
+## Assignment 2 - ✅
 
-Status: Waiting for feedback.
+Status: Done
 
-## Asignment 3 - 🕗
+## Assignment 3 - ✅
 
-Status: Waiting for feedback.
+Status: Done
 
-Please visit assignment_3/README.md for futher instructions to build or run the application.
+Please visit assignment_3/README.md for furter instructions to build or run the application.
 
